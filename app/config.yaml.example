@@ -1,0 +1,17 @@
+# Пример config.yaml - определите группировку по тегам
+
+groups:
+  - name: Infrastructure
+    tagFilter: [infrastructure, proxy, networking, dns]
+
+  - name: Security
+    tagFilter: [security, authentication]
+
+  - name: Monitoring & Metrics
+    tagFilter: [monitoring, metrics, visualization]
+
+  - name: Productivity & Storage
+    tagFilter: [tools, productivity, storage, database]
+
+  - name: Media & Entertainment
+    tagFilter: [media, entertainment]

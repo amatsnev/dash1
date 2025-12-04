@@ -1,0 +1,14 @@
+
+services:
+  dashboard:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/app
+      - ./config:/config
+    environment:
+      - NODE_ENV=production
+    command: node server.js
+    restart: unless-stopped

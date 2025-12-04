@@ -1,0 +1,62 @@
+# Пример services.yaml - определите свои сервисы
+
+services:
+  - name: Traefik
+    description: Reverse proxy и load balancer
+    url: https://traefik.home.example.com
+    icon: ch-traefik
+    tags: [proxy, networking, infrastructure]
+
+  - name: NocoDB
+    description: Open source Airtable alternative
+    url: https://nocodb.home.example.com
+    icon: si-nocodb
+    tags: [database, tools, productivity]
+
+  - name: Authelia
+    description: Single Sign-On и 2FA
+    url: https://auth.home.example.com
+    icon: si-authelia
+    tags: [security, authentication, infrastructure]
+
+  - name: Portainer
+    description: Docker management UI
+    url: https://portainer.home.example.com
+    icon: si-portainer
+    tags: [docker, management, infrastructure]
+
+  - name: Glance
+    description: Status page и dashboard
+    url: https://glance.home.example.com
+    icon: si-glance
+    tags: [monitoring, status, tools]
+
+  - name: Prometheus
+    description: Metrics и monitoring
+    url: https://prometheus.home.example.com
+    icon: si-prometheus
+    tags: [monitoring, metrics, infrastructure]
+
+  - name: Grafana
+    description: Visualization and analytics
+    url: https://grafana.home.example.com
+    icon: si-grafana
+    tags: [monitoring, metrics, visualization]
+
+  - name: PiHole
+    description: Network-wide ad blocking
+    url: https://pihole.home.example.com
+    icon: si-pihole
+    tags: [networking, security, dns]
+
+  - name: Jellyfin
+    description: Media server
+    url: https://jellyfin.home.example.com
+    icon: si-jellyfin
+    tags: [media, entertainment, tools]
+
+  - name: Nextcloud
+    description: File sync and sharing
+    url: https://nextcloud.home.example.com
+    icon: si-nextcloud
+    tags: [storage, productivity, tools]

@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services Dashboard</title>
+    <style>
+        :root {
+            --color-white: rgba(255, 255, 255, 1);
+            --color-black: rgba(0, 0, 0, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-gray-400: rgba(119, 124, 124, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-border: rgba(94, 82, 64, 0.2);
+            --color-border-secondary: rgba(94, 82, 64, 0.12);
+
+            --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-size-sm: 12px;
+            --font-size-base: 14px;
+            --font-size-md: 14px;
+            --font-size-lg: 16px;
+            --font-size-xl: 18px;
+            --space-4: 4px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --radius-base: 8px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+        }
+
+        html[data-theme="dark"] {
+            --color-background: var(--color-charcoal-700);
+            --color-surface: var(--color-charcoal-800);
+            --color-text: rgba(245, 245, 245, 1);
+            --color-text-secondary: rgba(167, 169, 169, 0.7);
+            --color-primary: var(--color-teal-300);
+            --color-primary-hover: rgba(50, 184, 198, 0.8);
+            --color-border: rgba(119, 124, 124, 0.3);
+            --color-border-secondary: rgba(119, 124, 124, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family-base);
+            background-color: var(--color-background);
+            color: var(--color-text);
+        }
+
+        body {
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-16);
+        }
+
+        header {
+            margin-bottom: var(--space-24);
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--space-16);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-12);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-16);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-8);
+        }
+
+        .header-controls {
+            display: flex;
+            gap: var(--space-16);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-8);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: var(--space-8) var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            background-color: var(--color-surface);
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+        }
+
+        .search-box input::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        .active-tags-container {
+            display: flex;
+            gap: var(--space-4);
+            margin-top: var(--space-8);
+            flex-wrap: wrap;
+        }
+
+        .active-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-4) var(--space-8);
+            background-color: var(--color-primary);
+            color: white;
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+        }
+
+        .active-tag:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+        .clear-filters-btn {
+            background-color: var(--color-surface);
+            color: var(--color-text-secondary);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            padding: var(--space-8) var(--space-12);
+            height: 40px;
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: var(--space-8);
+        }
+
+        .clear-filters-btn:hover {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .control-group {
+            display: flex;
+            gap: var(--space-8);
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-4);
+            padding: var(--space-8) var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            background-color: var(--color-surface);
+            color: var(--color-text);
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .btn-icon {
+            padding-inline: var(--space-8);
+        }
+
+        .btn.active {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        select {
+            padding: var(--space-8) var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            background-color: var(--color-surface);
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+            cursor: pointer;
+        }
+
+        .main-content {
+            display: flex;
+            gap: var(--space-20);
+        }
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            background-color: var(--color-surface);
+            border-right: 1px solid var(--color-border-secondary);
+        }
+
+        .sidebar-inner {
+            padding: 0 var(--space-12) var(--space-24) var(--space-4);
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            margin-bottom: var(--space-24);
+        }
+
+        .sidebar-title {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--space-12);
+        }
+
+        .sidebar-item {
+            padding: var(--space-8) var(--space-12);
+            margin-bottom: var(--space-4);
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: var(--font-size-sm);
+        }
+
+        .sidebar-item:hover {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .sidebar-item.active {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--space-16);
+            margin-top: var(--space-16);
+        }
+
+        .grid.cols-1 {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        .grid.cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid.cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid.cols-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .grid.cols-full {
+            grid-template-columns: 1fr;
+        }
+
+        .service-card {
+            display: flex;
+            flex-direction: column;
+            padding: var(--space-16);
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border-secondary);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--color-text);
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-primary), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .service-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .service-icon img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+
+        .service-name {
+            font-weight: 600;
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--space-4);
+        }
+
+        .service-desc {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-12);
+            flex-grow: 1;
+        }
+
+        .service-url {
+            font-size: var(--font-size-sm);
+            color: var(--color-primary);
+            word-break: break-all;
+            margin-bottom: var(--space-12);
+        }
+
+        .service-tags {
+            display: flex;
+            gap: var(--space-4);
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: var(--space-4) var(--space-8);
+            background-color: rgba(33, 128, 141, 0.1);
+            color: var(--color-primary);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tag:hover {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .tag.active {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .service-status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: var(--space-8);
+            color: #ccc; /* Default unknown state */
+        }
+
+        .service-status-indicator.online {
+            color: #4caf50; /* Green for online */
+        }
+
+        .service-status-indicator.offline {
+            color: #f44336; /* Red for offline */
+        }
+
+        .service-status-indicator.loading {
+            color: #ff9800; /* Orange for loading */
+        }
+
+        .service-status-indicator.unknown {
+            color: #9e9e9e; /* Gray for unknown */
+        }
+
+        .group-title {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-top: var(--space-24);
+            margin-bottom: var(--space-16);
+            padding-bottom: var(--space-8);
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .group-title:first-child {
+            margin-top: 0;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: var(--space-32);
+            color: var(--color-text-secondary);
+        }
+
+        .loading {
+            text-align: center;
+            padding: var(--space-32);
+            color: var(--color-text-secondary);
+        }
+
+        .error {
+            padding: var(--space-16);
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: var(--radius-base);
+            color: var(--color-text);
+            margin-bottom: var(--space-16);
+        }
+
+        .sidebar-backdrop {
+            display: none;
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--space-12);
+            }
+
+            .main-content {
+                position: relative;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                height: 100vh;
+                width: 260px;
+                transform: translateX(-100%);
+                transition: transform 0.25s ease-out;
+                z-index: 1000;
+                box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+            }
+
+            body.sidebar-open .sidebar {
+                transform: translateX(0);
+            }
+
+            .sidebar-inner {
+                padding-top: var(--space-24);
+            }
+
+            .sidebar-backdrop {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 900;
+            }
+
+            body.sidebar-open .sidebar-backdrop {
+                display: block;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .content {
+                order: 1;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            .grid.cols-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid.cols-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid.cols-2 {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .mobile-only {
+                display: inline-flex;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid.cols-4,
+            .grid.cols-3,
+            .grid.cols-2 {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-controls {
+                gap: var(--space-8);
+            }
+
+            .sidebar-section {
+                margin-bottom: var(--space-16);
+            }
+
+            /* Improve mobile service card layout */
+            .service-card {
+                padding: var(--space-12);
+            }
+
+            .service-name {
+                font-size: var(--font-size-base);
+            }
+
+            .service-desc {
+                font-size: var(--font-size-sm);
+            }
+
+            .service-url {
+                font-size: var(--font-size-sm);
+                word-break: break-word;
+            }
+
+            /* Adjust active tags container for mobile */
+            .active-tags-container {
+                max-height: 80px;
+                overflow-y: auto;
+                padding: var(--space-4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <div style="display: flex; align-items: center; gap: var(--space-8);">
+                    <img src="logo.png" alt="Services Dashboard Logo" style="height: 48px; width: auto; max-width: 150px;">
+                    <h1>Services Dashboard</h1>
+                </div>
+                <div class="header-actions">
+                    <button id="filtersToggle" class="btn btn-icon mobile-only" type="button" aria-label="Показать/скрыть фильтры">
+                        ☰ Фильтры
+                    </button>
+                    <button id="themeToggle" class="btn btn-icon" type="button" aria-label="Переключить тему">
+                        🌙 Тема
+                    </button>
+                </div>
+            </div>
+            <div class="header-controls">
+                <div class="search-box">
+                    <div style="display: flex; width: 100%; align-items: center;">
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Поиск по имени, тегу, ссылке..."
+                            style="flex: 1;"
+                            aria-label="Поиск сервисов"
+                            autocomplete="off"
+                        >
+                        <button id="clearFiltersBtn" class="btn btn-icon clear-filters-btn" type="button" title="Очистить фильтры" aria-label="Очистить фильтры">
+                            ×
+                        </button>
+                    </div>
+                    <div id="activeTags" class="active-tags-container" aria-label="Активные фильтры"></div>
+                </div>
+                <div class="control-group">
+                    <label for="columnsSelect" style="font-size: var(--font-size-sm);">Колонки:</label>
+                    <select id="columnsSelect" aria-label="Количество колонок">
+                        <option value="1">1 колонка</option>
+                        <option value="2">2 колонки</option>
+                        <option value="3" selected>3 колонки</option>
+                        <option value="4">4 колонки</option>
+                        <option value="full">Весь экран</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <div id="error" role="alert" aria-live="polite"></div>
+
+        <div class="sidebar-backdrop" id="sidebarBackdrop" tabindex="0" aria-hidden="true"></div>
+
+        <div class="main-content">
+            <aside class="sidebar" aria-label="Фильтры">
+                <div class="sidebar-inner">
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">Группы</div>
+                        <div id="groupsList" role="listbox" aria-label="Список групп"></div>
+                    </div>
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">Тэги</div>
+                        <div id="tagsList" role="listbox" aria-label="Список тегов"></div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div id="servicesContent" role="main" aria-label="Список сервисов"></div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const app = {
+            services: [],
+            groups: [],
+            state: {
+                selectedGroup: null,
+                selectedTags: [],
+                searchQuery: '',
+                columnsCount: 3,
+                loading: true,
+                error: null,
+                theme: 'light'
+            },
+
+            async init() {
+                this.initTheme();
+                this.setupEventListeners();
+                this.setupKeyboardNavigation();
+                await this.loadConfig();
+                if (this.services.length > 0 || this.groups.length > 0) {
+                    this.renderGroups();
+                    this.renderTags();
+                    this.render();
+                    // Update service statuses after initial render
+                    setTimeout(() => this.updateServiceStatuses(), 1000);
+                }
+            },
+
+            initTheme() {
+                const saved = localStorage.getItem('dashboard-theme');
+                if (saved === 'light' || saved === 'dark') {
+                    this.state.theme = saved;
+                } else {
+                    this.state.theme = 'light';
+                }
+                document.documentElement.setAttribute('data-theme', this.state.theme);
+                this.updateThemeToggleButton();
+            },
+
+            toggleTheme() {
+                this.state.theme = this.state.theme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', this.state.theme);
+                localStorage.setItem('dashboard-theme', this.state.theme);
+                this.updateThemeToggleButton();
+            },
+
+            updateThemeToggleButton() {
+                const btn = document.getElementById('themeToggle');
+                if (!btn) return;
+                if (this.state.theme === 'dark') {
+                    btn.textContent = '☀️ Тема';
+                } else {
+                    btn.textContent = '🌙 Тема';
+                }
+            },
+
+            async loadConfig() {
+                try {
+                    this.state.loading = true;
+                    this.state.error = null;
+                    this.showLoading();
+
+                    const response = await fetch('/api/config');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    this.services = data.services || [];
+                    this.groups = data.groups || [];
+                    this.state.loading = false;
+                } catch (error) {
+                    this.state.error = `Ошибка загрузки конфига: ${error.message}`;
+                    this.state.loading = false;
+                    this.showError(this.state.error);
+                    console.error('Config load error:', error);
+                }
+            },
+
+            showLoading() {
+                document.getElementById('servicesContent').innerHTML =
+                    '<div class="loading">⏳ Загрузка...</div>';
+            },
+
+            showError(message) {
+                document.getElementById('error').innerHTML =
+                    `<div class="error">❌ ${message}</div>`;
+            },
+
+            setupEventListeners() {
+                document.getElementById('searchInput').addEventListener('input', (e) => {
+                    this.state.searchQuery = e.target.value.toLowerCase();
+                    this.render();
+                });
+
+                document.getElementById('columnsSelect').addEventListener('change', (e) => {
+                    this.state.columnsCount = e.target.value;
+                    this.render();
+                });
+
+                const themeToggle = document.getElementById('themeToggle');
+                themeToggle.addEventListener('click', () => this.toggleTheme());
+
+                const filtersToggle = document.getElementById('filtersToggle');
+                const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+                filtersToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('sidebar-open');
+                });
+
+                sidebarBackdrop.addEventListener('click', () => {
+                    document.body.classList.remove('sidebar-open');
+                });
+
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) {
+                        document.body.classList.remove('sidebar-open');
+                    }
+                });
+
+                // Add event listener for clear filters button
+                const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+                if (clearFiltersBtn) {
+                    clearFiltersBtn.addEventListener('click', () => this.clearAllFilters());
+                }
+            },
+
+            clearAllFilters() {
+                this.state.selectedGroup = null;
+                this.state.selectedTags = [];
+                this.state.searchQuery = '';
+                document.getElementById('searchInput').value = '';
+                this.renderGroups();
+                this.renderTags();
+                this.render();
+            },
+
+            renderActiveTags() {
+                const container = document.getElementById('activeTags');
+                if (!container) return;
+
+                if (this.state.selectedTags.length === 0) {
+                    container.innerHTML = '';
+                    return;
+                }
+
+                container.innerHTML = this.state.selectedTags.map(tag => `
+                    <div class="active-tag" onclick="app.removeTag('${tag}')">
+                        ${tag}
+                    </div>
+                `).join('');
+            },
+
+            removeTag(tag) {
+                const index = this.state.selectedTags.indexOf(tag);
+                if (index > -1) {
+                    this.state.selectedTags.splice(index, 1);
+                    this.renderGroups();
+                    this.renderTags();
+                    this.render();
+                }
+            },
+
+            // Check service status with timeout using image ping method to avoid CORS issues
+            async checkServiceStatus(url) {
+                if (!url || url === '#') return 'unknown';
+
+                try {
+                    // Try to create an image from favicon as a way to check if the service is accessible
+                    // This approach avoids CORS issues with direct fetch requests
+                    const faviconUrl = new URL('/favicon.ico', url).href;
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+                    // Try to fetch a simple resource that's likely to exist on most services
+                    const response = await fetch(faviconUrl, {
+                        method: 'GET',
+                        signal: controller.signal,
+                        mode: 'no-cors', // Allow cross-origin requests
+                        cache: 'no-store' // Prevent caching
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    // If we get a response (even if it's an error response), the service is reachable
+                    return 'online';
+                } catch (error) {
+                    // If we get here, the service is likely offline
+                    return 'offline';
+                }
+            },
+
+            // Update status indicators for all services
+            async updateServiceStatuses() {
+                const indicators = document.querySelectorAll('.service-status-indicator');
+
+                for (const indicator of indicators) {
+                    const url = indicator.getAttribute('data-url');
+                    if (url && url !== '#') {
+                        // Set loading state
+                        indicator.className = 'service-status-indicator loading';
+
+                        const status = await this.checkServiceStatus(url);
+                        indicator.className = `service-status-indicator ${status}`;
+                    }
+                }
+            },
+
+            // Add keyboard navigation support
+            setupKeyboardNavigation() {
+                // Add event listener for keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl/Cmd + F to focus search
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                        e.preventDefault();
+                        document.getElementById('searchInput').focus();
+                    }
+
+                    // Escape to clear filters
+                    if (e.key === 'Escape') {
+                        if (document.getElementById('searchInput').value !== '' ||
+                            this.state.selectedTags.length > 0 ||
+                            this.state.selectedGroup !== null) {
+                            this.clearAllFilters();
+                        }
+                    }
+                });
+
+                // Make service cards keyboard accessible
+                document.addEventListener('keydown', (e) => {
+                    if (e.target.classList.contains('service-card') && e.key === 'Enter') {
+                        e.target.click();
+                    }
+                });
+            },
+
+            renderGroups() {
+                const container = document.getElementById('groupsList');
+                container.innerHTML = this.groups.map(group => `
+                    <div class="sidebar-item ${this.state.selectedGroup === group.name ? 'active' : ''}"
+                         data-group="${group.name}"
+                         onclick="app.selectGroup('${group.name}')">
+                        ${group.name}
+                    </div>
+                `).join('');
+                this.renderActiveTags();
+            },
+
+            renderTags() {
+                const container = document.getElementById('tagsList');
+                const allTags = [...new Set(this.services.flatMap(s => s.tags || []))].sort();
+                container.innerHTML = allTags.map(tag => `
+                    <div class="sidebar-item ${this.state.selectedTags.includes(tag) ? 'active' : ''}"
+                         data-tag="${tag}"
+                         onclick="app.toggleTag('${tag}')">
+                        ${tag}
+                    </div>
+                `).join('');
+                this.renderActiveTags();
+            },
+
+            selectGroup(groupName) {
+                this.state.selectedGroup = this.state.selectedGroup === groupName ? null : groupName;
+                this.state.selectedTags = [];
+                this.renderGroups();
+                this.renderTags();
+                this.render();
+                this.renderActiveTags();
+            },
+
+            toggleTag(tag) {
+                const index = this.state.selectedTags.indexOf(tag);
+                if (index > -1) {
+                    this.state.selectedTags.splice(index, 1);
+                } else {
+                    this.state.selectedTags.push(tag);
+                }
+                this.state.selectedGroup = null;
+                this.renderGroups();
+                this.renderTags();
+                this.render();
+                this.renderActiveTags();
+            },
+
+            getFilteredServices() {
+                return this.services.filter(service => {
+                    const tags = service.tags || [];
+
+                    // Search filter
+                    if (this.state.searchQuery) {
+                        const q = this.state.searchQuery;
+                        const matchSearch =
+                            (service.name || '').toLowerCase().includes(q) ||
+                            (service.description || '').toLowerCase().includes(q) ||
+                            (service.url || '').toLowerCase().includes(q) ||
+                            tags.some(t => (t || '').toLowerCase().includes(q));
+                        if (!matchSearch) return false;
+                    }
+
+                    // Group filter (OR по тегам группы)
+                    if (this.state.selectedGroup) {
+                        const group = this.groups.find(g => g.name === this.state.selectedGroup);
+                        if (group && Array.isArray(group.tagFilter) && group.tagFilter.length > 0) {
+                            const matchGroup = group.tagFilter.some(tag => tags.includes(tag));
+                            if (!matchGroup) return false;
+                        }
+                    }
+
+                    // Tags filter (AND по выбранным тегам)
+                    if (this.state.selectedTags.length > 0) {
+                        const matchAllSelected = this.state.selectedTags.every(tag =>
+                            tags.includes(tag)
+                        );
+                        if (!matchAllSelected) return false;
+                    }
+
+                    return true;
+                });
+            },
+
+            groupServicesByGroup() {
+                const filtered = this.getFilteredServices();
+                const grouped = {};
+
+                this.groups.forEach(group => {
+                    grouped[group.name] = filtered.filter(service =>
+                        (group.tagFilter || []).some(tag => (service.tags || []).includes(tag))
+                    );
+                });
+
+                return grouped;
+            },
+
+            getGridClass() {
+                const c = this.state.columnsCount;
+                if (c === 'full') return 'cols-full';
+                if (['1', '2', '3', '4'].includes(String(c))) {
+                    return `cols-${c}`;
+                }
+                return 'cols-3';
+            },
+
+            render() {
+                const container = document.getElementById('servicesContent');
+
+                if (this.state.loading) {
+                    this.showLoading();
+                    this.renderActiveTags();
+                    return;
+                }
+
+                if (this.state.selectedGroup ||
+                    this.state.selectedTags.length > 0 ||
+                    this.state.searchQuery) {
+
+                    const filtered = this.getFilteredServices();
+
+                    if (filtered.length === 0) {
+                        container.innerHTML = '<div class="no-results">Ничего не найдено</div>';
+                        this.renderActiveTags();
+                        return;
+                    }
+
+                    const gridClass = this.getGridClass();
+                    container.innerHTML = `
+                        <div class="grid ${gridClass}">
+                            ${filtered.map(s => this.renderServiceCard(s)).join('')}
+                        </div>
+                    `;
+                } else {
+                    const grouped = this.groupServicesByGroup();
+                    let html = '';
+
+                    this.groups.forEach(group => {
+                        const services = grouped[group.name] || [];
+                        if (services.length > 0) {
+                            const gridClass = this.getGridClass();
+                            html += `
+                                <div class="group-title">${group.name}</div>
+                                <div class="grid ${gridClass}">
+                                    ${services.map(s => this.renderServiceCard(s)).join('')}
+                                </div>
+                            `;
+                        }
+                    });
+
+                    container.innerHTML = html || '<div class="no-results">Нет сервисов</div>';
+                }
+
+                this.renderActiveTags();
+                // Update service statuses after rendering if services are displayed
+                if (this.state.selectedGroup ||
+                    this.state.selectedTags.length > 0 ||
+                    this.state.searchQuery ||
+                    (!this.state.selectedGroup &&
+                     this.state.selectedTags.length === 0 &&
+                     !this.state.searchQuery)) {
+                    setTimeout(() => this.updateServiceStatuses(), 1000);
+                }
+            },
+
+            buildIconUrl(iconValue) {
+                if (!iconValue) return null;
+
+                // проверяем форматы иконок
+                let ref = iconValue.trim();
+
+                // если формат sh-<reference> (selfhst), используем selfhst/icons
+                if (ref.startsWith('sh-') || ref.startsWith('sh:')) {
+                    ref = ref.slice(3);
+                    if (!ref) return null;
+                    return `https://cdn.jsdelivr.net/gh/selfhst/icons/png/${ref}.png`;
+                }
+                // если формат si-<reference> (simpleicons), используем simple-icons
+                else if (ref.startsWith('si-') || ref.startsWith('si:')) {
+                    ref = ref.slice(3);
+                    if (!ref) return null;
+                    return `https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/${ref}.svg`;
+                }
+
+                // для обратной совместимости - если просто указано имя без префикса
+                if (!ref.includes('-') && !ref.includes(':')) {
+                    // можно использовать simple-icons по умолчанию для непрефиксных иконок
+                    return `https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/${ref}.svg`;
+                }
+
+                return null;
+            },
+
+            renderServiceCard(service) {
+                const iconUrl = this.buildIconUrl(service.icon);
+                let host = '';
+                let statusIndicator = '';
+                try {
+                    host = new URL(service.url).host;
+                    // Add status indicator based on URL
+                    statusIndicator = `<span class="service-status-indicator" data-url="${service.url}" aria-label="Статус сервиса">●</span>`;
+                } catch (e) {
+                    host = service.url || '';
+                    statusIndicator = `<span class="service-status-indicator unknown" aria-label="Статус сервиса">●</span>`;
+                }
+
+                return `
+                    <a href="${service.url}" target="_blank" class="service-card" tabindex="0" role="listitem" aria-label="${service.name} - ${service.description || 'без описания'}">
+                        <div style="display: flex; align-items: center; gap: var(--space-12); margin-bottom: var(--space-12);">
+                            <div class="service-icon">
+                                ${
+                                    iconUrl
+                                        ? `<img src="${iconUrl}" alt="${service.name} icon" loading="lazy">`
+                                        : '📦'
+                                }
+                            </div>
+                            <div class="service-name" style="margin: 0; flex: 1;">${service.name}</div>
+                            ${statusIndicator}
+                        </div>
+                        <div class="service-desc">${service.description || ''}</div>
+                        <div class="service-url" title="${service.url}">${host}</div>
+                        <div class="service-tags">
+                            ${(service.tags || []).map(tag => {
+                                const isActive = this.state.selectedTags.includes(tag);
+                                const tagClass = isActive ? 'tag active' : 'tag';
+                                return `<span class="${tagClass}" onclick="event.preventDefault(); app.toggleTag('${tag}')" role="button" aria-label="Фильтр по тегу ${tag}">${tag}</span>`;
+                            }).join('')}
+                        </div>
+                    </a>
+                `;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
