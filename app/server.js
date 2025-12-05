@@ -136,6 +136,77 @@ app.get('/api/config', (req, res) => {
   }
 });
 
+// API endpoint для добавления нового сервиса в services.yaml
+app.post('/api/services', (req, res) => {
+  try {
+    const { name, url, description, icon, tags } = req.body;
+
+    // Валидация обязательных полей
+    if (!name || !url) {
+      return res.status(400).json({ error: 'Поля name и url обязательны' });
+    }
+
+    const newService = {
+      name: name,
+      url: url,
+      description: description || '',
+      icon: icon || null,
+      tags: Array.isArray(tags) ? tags : (tags ? [tags] : [])
+    };
+
+    // Путь к файлу services.yaml
+    const servicesFilePath = path.join(CONFIG_DIR, 'services.yaml');
+
+    // Загружаем существующие данные из services.yaml
+    let existingData = [];
+    if (fs.existsSync(servicesFilePath)) {
+      const fileContent = fs.readFileSync(servicesFilePath, 'utf8');
+      if (fileContent.trim()) {
+        existingData = yaml.load(fileContent);
+        if (!existingData || typeof existingData !== 'object') {
+          existingData = { services: [] };
+        }
+      } else {
+        existingData = { services: [] };
+      }
+    } else {
+      existingData = { services: [] };
+    }
+
+    // Если структура не массив, а объект с полем services, то добавляем туда
+    if (existingData.services && Array.isArray(existingData.services)) {
+      // Проверяем, не существует ли уже сервис с таким именем
+      const existingServiceIndex = existingData.services.findIndex(s => s.name === name);
+      if (existingServiceIndex > -1) {
+        return res.status(400).json({ error: 'Сервис с таким именем уже существует' });
+      }
+
+      existingData.services.push(newService);
+    } else if (Array.isArray(existingData)) {
+      // Если структура сразу массив сервисов
+      const existingServiceIndex = existingData.findIndex(s => s.name === name);
+      if (existingServiceIndex > -1) {
+        return res.status(400).json({ error: 'Сервис с таким именем уже существует' });
+      }
+
+      existingData.push(newService);
+    } else {
+      // Если структура другая, создаем с пустым массивом services
+      existingData = { services: [newService] };
+    }
+
+    // Сохраняем обновленные данные в файл
+    const yamlString = yaml.dump(existingData, { lineWidth: -1 });
+    fs.writeFileSync(servicesFilePath, yamlString, 'utf8');
+
+    console.log(`Сервис "${name}" добавлен в services.yaml`);
+    res.status(200).json({ message: 'Сервис успешно добавлен', service: newService });
+  } catch (error) {
+    console.error('Error adding service:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
