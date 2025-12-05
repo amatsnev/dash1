@@ -6,6 +6,7 @@ Features:
 - tag-based filtering
 - simple icons ( selfh.st , simpleicons )
 - mobile view
+- quick add from web form
 
 ## Setup
 
